@@ -52,10 +52,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=${{ github.ref_name }}-
             type=raw,value=latest,enable={{is_default_branch}}
-      - name: get postgres
-        run: |
-          cd Ghidra/Features/BSim/support
-          curl -o postgres-15.17.tar.gz https://ftp.postgresql.org/pub/source/v15.18/postgresql-15.18.tar.gz
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v7

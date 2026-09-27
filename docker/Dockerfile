@@ -1,8 +1,8 @@
 ###############################################################
 # Dockerfile
-# This is the Dockerfile for a release of Ghidra. 
-# It should be built from the root directory of 
-# a ghidra release using the command 
+# This is the Dockerfile for a release of Ghidra.
+# It should be built from the root directory of
+# a ghidra release using the command
 # docker build -f docker/Dockerfile -t <image-name>
 ###############################################################
 FROM alpine:3.20 AS base
@@ -44,7 +44,9 @@ RUN apk add gradle \
 COPY . .
 
 # build postgres and install pyghidra
-RUN /ghidra/Ghidra/Features/BSim/support/make-postgres.sh \
+RUN cd /ghidra/Ghidra/Features/BSim/support/ \
+        && wget -O https://ftp.postgresql.org/pub/source/v15.18/postgresql-15.18.tar.gz \
+        && /ghidra/Ghidra/Features/BSim/support/make-postgres.sh \
         && python3 -m venv /ghidra/venv \
         && /ghidra/venv/bin/python3 -m pip install --no-index -f /ghidra/Ghidra/Features/PyGhidra/pypkg/dist pyghidra \
 		&& mkdir /ghidra/repositories && mkdir /ghidra/bsim_datadir
@@ -55,7 +57,7 @@ FROM base AS runtime
 # install additional dependencies needed for running ghidra
 RUN apk add openssl openssh-client \
         xhost musl-locales musl-locales-lang
-        
+
 USER ghidra
 WORKDIR /ghidra
 COPY --chown=ghidra:ghidra --from=build /ghidra /ghidra
