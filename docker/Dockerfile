@@ -44,8 +44,7 @@ RUN apk add gradle \
 COPY . .
 
 # build postgres and install pyghidra
-RUN cd /ghidra/Ghidra/Features/BSim/support/ \
-        && wget -O https://ftp.postgresql.org/pub/source/v15.18/postgresql-15.18.tar.gz \
+RUN wget -O /ghidra/Ghidra/Features/BSim/support/postgres-15.19.tar.gz "https://ftp.postgresql.org/pub/source/v15.18/postgresql-15.18.tar.gz" \
         && /ghidra/Ghidra/Features/BSim/support/make-postgres.sh \
         && python3 -m venv /ghidra/venv \
         && /ghidra/venv/bin/python3 -m pip install --no-index -f /ghidra/Ghidra/Features/PyGhidra/pypkg/dist pyghidra \
